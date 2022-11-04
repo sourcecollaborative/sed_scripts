@@ -1,0 +1,46 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    # USE CASE: CLIENT FILE USES `""` AS DELIMITER. WE WANT
+    # TO CHANGE THIS BACK TO `"`. PROCESS IS AS FOLLOWS:
+    #
+    # The new algorithm. This looks funky, but works and makes debugging easy. The reason we use Unicode
+    # flower characters as sentinels for the column divisions and the start and end of lines
+    # is because we can assume with almost 100% certainty that these characters don't already
+    # exist in the data files, so they are very "safe" sentinel characters. For any remaining
+    # singleton double-quote marks embedded in strings, we use the Unicode U+201D typographical
+    # character.
+    #
+    # The process is as follows:
+    # 
+    #    1. Convert all of the "delimiter" characters at column divisions to a sentinel ("❁").
+    #    2. Convert all of the "delimiter" characters at line beginnings and endings to
+    #       a different sentinel character ("✾").
+    #    3. Any remaining quotation marks (`"`) are "string embedded" quotation marks.
+    #       We convert these to U+201D, the typographical ending double quote mark (`”`).
+    #       This *guarantees* that software will not treat these as some kind of delimiter.
+    #       They will be ignored, while visually and semantically still serving their 
+    #       original function.
+    #    4. and 5. Back convert the floral sentinels to what we need for the data format
+    #       (e.g., singleton ASCII double quotes, `"`).
+    #
+    #              COLUMN DIV ;STT & END OF LINE; EMBED QTS; REVERSE ; REVERSE
+    sed -E -i.original 's/"",""/❁/g;s/""/✾/g;s/"/”/g;s/✾/"/g;s/❁/","/g' $ARGUMENT
+else
+    echo "FIX_DOUBLE is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo 'fix_double fixes files with duplicated double quotation marks, `""`'
+    echo 'by replacing them with singleton double quotation marks `"`.'
+    echo 'String-embedded double quotation marks `"` are converted to'
+    echo 'Unicode U+201D, `”`. This is done to handle things like'
+    echo '«Patient is 5'7\" tall» which would become «Patient is 5'7” tall».'
+    echo '' 
+    echo 'Please pass a valid file name as the command line argument.'
+    echo ''
+    echo 'The original file contents will be saved with an extension of «.original» added'
+    echo 'to the end. The modified contents will retain the original file name.'
+    exit 1
+fi
+
