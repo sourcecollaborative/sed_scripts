@@ -1,0 +1,17 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    #
+    sed -E -i.original 's/,/‚/g;s/"/”/g;s/\t/‣/g;s/|/,/g' $ARGUMENT
+else
+    echo "psv2csv is (c) 2022 by Edward H. Trager."
+    echo "Usage is: psv2csv <pipe_delimited_file>"
+    echo "File will be converted to a comma-delimited file."
+    echo "Original unchanged files will have «.original» added to the file name."
+    echo "For a complete explanation of how this works, please read the comments"
+    echo "that precede the code in the script."
+    exit 1
+fi
+
