@@ -20,7 +20,7 @@ if [[ -f $ARGUMENT ]]; then
     # values but do not interfere with file parsing in the way that the original ASCII
     # characters may have.
     #
-    sed -E -i.original 's/^"//;s/"$//;s/"\t"/\t/g;s/,/‚/g;s/"/”/g;s/\t/,/g' $ARGUMENT
+    sed -E -i.original 's/^"//;s/"$//;s/"\t"/\t/g;s/"\t/\t/g;s/\t"/\t/g;s/,/‚/g;s/"/”/g;s/\t/,/g' $ARGUMENT
 else
     echo "tsv2csv is (c) 2022 by Edward H. Trager."
     echo "Usage is: tsv2csv <tab_delimited_file>"
