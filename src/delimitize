@@ -1,0 +1,16 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+	sed -E -i.original 's/^(.{5}) (.{7}) (.{1}) (.{60}) (.*)$/\1\t\2\t\3\t\4\t\5/' $ARGUMENT
+else
+	echo "delimitize is (c) 2022 by Edward H. Trager"
+	echo ""
+	echo "This script was used to convert the 2023 ICD10-CM order file to a tab-delimited file"
+	echo "The original file was delimited only with spaces, with aligned columns"
+	echo "The script inserts tabs in place of the spaces that were used as 'gaps' between columns"
+	echo "Although the sed line is specific to the one file on which it was used, you can easily"
+	echo "take this and customize it to handle similarly space-delimited files."
+        echo ""
+    	echo "Pass file name as argument. Original will be saved with '.original' extension."
+fi
+
