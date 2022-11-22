@@ -1,0 +1,21 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    # USE CASE: CLIENT FILE CONTAINS repeated 0x0000 characters
+    #           which we want to remove entirely.
+    #
+    LC_CTYPE=C sed -E -i.original 's/\x00//g' $ARGUMENT
+else
+    echo "remove_0x0000 is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo "USE CASE: CLIENT FILE CONTAINS repeated 0x0000 characters. This script will remove them.
+    echo ""
+    echo 'Please pass a valid file name as the command line argument.'
+    echo ''
+    echo 'The original file contents will be saved with an extension of «.original» added'
+    echo 'to the end. The modified contents will retain the original file name.'
+    exit 1
+fi
+
