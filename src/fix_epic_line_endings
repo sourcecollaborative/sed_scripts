@@ -1,0 +1,41 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    #
+    #              COLUMN DIV ;STT & END OF LINE; EMBED QTS; REVERSE ; REVERSE
+    # sed -E -i.original 's/"",""/❁/g;s/""/✾/g;s/"/”/g;s/✾/"/g;s/❁/","/g' $ARGUMENT
+    #
+    # The following are substituted:
+    #
+    # * The weird ÊÉÊÉ and ÊÉ Epic line ending sentinels are changed to single spaces 
+    #
+    # * Embedded carriage return, 0x0d, is changed to a single space
+    #
+    # * HTML &apos; is converted to Unicode u+2019 "single comma quotation mark"
+    #
+    # * Strings with HTML &quot; entities are changed to use U+201C and U+201D
+    #   double turned and non-turned comma quotation marks, respectively.
+    #
+    # * Any leftover &quot; are converted to U+201D double quotation mark
+    #
+    # * Extra spaces are condensed to single spaces
+    #
+    sed -E -i.original 's/ÊÉÊÉ/ /g;s/ÊÉ/ /g;s/\x0d/ /g;s/&apos\;/’/g;s/&quot\;(.*)&quot\;/“\1”/g;s/&quot\;/”/g;s/ +/ /g' $ARGUMENT
+else
+    echo "fix_epic_line_endings is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo "fix_epic_line_endings fixes EPIC’s unusual line ending sentinel characters"
+    echo "by replacing «ÊÉ» by spaces."
+    echo ""
+    echo "Certain HTML-style entities are converted to semantically-equivalent Unicode values."
+    echo "Review the «sed» regular expressions for a complete understanding."
+    echo '' 
+    echo 'Please pass a valid file name as the command line argument.'
+    echo ''
+    echo 'The original file contents will be saved with an extension of «.original» added'
+    echo 'to the end. The modified contents will retain the original file name.'
+    exit 1
+fi
+
