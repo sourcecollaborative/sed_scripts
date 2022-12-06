@@ -10,12 +10,12 @@ if [[ -f $ARGUMENT ]]; then
 else
     echo "remove_0x0000 is (c) 2022 by Edward H. Trager."
     echo ""
-    echo "USE CASE: CLIENT FILE CONTAINS repeated 0x0000 characters. This script will remove them.
+    echo "USE CASE: CLIENT FILE CONTAINS repeated 0x0000 characters. This script will remove them."
     echo ""
-    echo 'Please pass a valid file name as the command line argument.'
-    echo ''
-    echo 'The original file contents will be saved with an extension of «.original» added'
-    echo 'to the end. The modified contents will retain the original file name.'
+    echo "Please pass a valid file name as the command line argument."
+    echo ""
+    echo "The original file contents will be saved with an extension of «.original» added"
+    echo "to the end. The modified contents will retain the original file name."
     exit 1
 fi
 
