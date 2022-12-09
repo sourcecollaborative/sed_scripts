@@ -1,0 +1,22 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    # USE CASE: CLIENT FILE CONTAINS repeated 0x0000 characters
+    #           which we want to remove entirely.
+    #
+    sed -E -i.original '1s/.*/\U&/' $ARGUMENT
+else
+    echo "uppercase_header is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo "USE CASE: CLIENT FILE has header in lower-case. This script will capitalize"
+    echo "          the column names in the first row."
+    echo ""
+    echo "Please pass a valid file name as the command line argument."
+    echo ""
+    echo "The original file contents will be saved with an extension of «.original» added"
+    echo "to the end. The modified contents will retain the original file name."
+    exit 1
+fi
+
