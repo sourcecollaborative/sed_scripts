@@ -1,0 +1,22 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    # USE CASE: CLIENT FILE CONTAINS "NULL" as an entry, eg ...,NULL,NULL,...
+    #           which we want to remove entirely and replacw with eg ...,,,...
+    #
+    LC_CTYPE=C sed -E -i.original 's/NULL//g' $ARGUMENT
+else
+    echo "remove_NULL is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo "USE CASE: CLIENT FILE CONTAINS "NULL" as the sentinel for null entries."
+    echo "This script will remove them and replace them with empty string."
+    echo ""
+    echo "Please pass a valid file name as the command line argument."
+    echo ""
+    echo "The original file contents will be saved with an extension of «.original» added"
+    echo "to the end. The modified contents will retain the original file name."
+    exit 1
+fi
+
