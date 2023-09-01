@@ -1,0 +1,49 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    #
+    # USE CASE: Date file contains data columns with things like `patient is 5' 8" tall`.
+    #           The presence of the ASCII `"` double quotation mark or the ASCII `'` single
+    #           quotation mark leads to incorrect parsing of columns (because of the 
+    #           unbalanced quotation mark problem) when the data are parsed into columns
+    #           by software such as PostgreSQL and others, even if the data file is using
+    #           TAB or PIPE delimiters (and, therefore not using COMMAs).
+    #
+    # WHAT THIS SCRIPT DOES: (1) `"` is replaced by Unicode U+201D `”`
+    #                        (2) `'` is replaced by Unicode U+2019 `’`
+    #
+    #           These substitutions maintain semantic intent for strings like 
+    #           `patient is 5' 8" tall` while eliminating all possibility of
+    #           incorrect parsing when dealing with TAB or PIPE delimited files.
+    #           Caution should most definitely be exercised before using this script
+    #           on COMMA-delimited files.
+    #
+    sed -E -i.original 's/"/”/g;s/'"'"'/’/g' $ARGUMENT
+else
+    echo "UNICODIFY_QUOTE_MARKS is (c) 2023 by Edward H. Trager."
+    echo ""
+    echo ' USE CASE: Date file contains data columns with things like `patient is 5’ 8" tall`.'
+    echo '           The presence of the ASCII double quotation mark or the ASCII single'
+    echo '           quotation mark leads to incorrect parsing of columns (because of the '
+    echo '           unbalanced quotation mark problem) when the data are parsed into columns'
+    echo '           by software such as PostgreSQL and others, even if the data file is using'
+    echo '           TAB or PIPE delimiters (and, therefore not using COMMAs).'
+    echo ''
+    echo ' WHAT THIS SCRIPT DOES: (1) ASCII DOUBLE QUOTATION MARK is replaced by Unicode U+201D `”`'
+    echo '                        (2) ASCII SINGLE QUOTATION MARK is replaced by Unicode U+2019 `’`'
+    echo ''
+    echo '           These substitutions maintain semantic intent for strings like '
+    echo '           `patient is 5’ 8" tall` while eliminating all possibility of'
+    echo '           incorrect parsing when dealing with TAB or PIPE delimited files.'
+    echo '           Caution should most definitely be exercised before using this script'
+    echo '           on COMMA-delimited files.'
+    echo '' 
+    echo 'Please pass a valid file name as the command line argument.'
+    echo ''
+    echo 'The original file contents will be saved with an extension of «.original» added'
+    echo 'to the end. The modified contents will retain the original file name.'
+    exit 1
+fi
+
