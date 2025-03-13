@@ -1,0 +1,12 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    sed -E -i.original '1s/PROCEDURE_DESC/PROC_DESCRIPTION/;1s/SERVICE_DT/SERVICE_DATE_DT/;1s/BILLING_PROV_ID/BILLING_PROVIDER_ID/;1s/TX_ID/UCL_ID/' $ARGUMENT
+else
+    echo "(c) 2025 by Edward H. Trager."
+    echo ""
+    echo "Please pass a valid file name as the command line argument."
+    exit 1
+fi
